@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1646142524 source:c:\users\titus\documents\struct-prog-jan-april-2022\county library system\main.c
+	<stdio.h>
+	<stdlib.h>
+
