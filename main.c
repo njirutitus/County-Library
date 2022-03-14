@@ -9,9 +9,18 @@ struct Patron {
     int is_staff;
 };
 
+int save_patron(struct Patron patron){
+    FILE *fp;
+    fp = fopen("patrons","ab");
+    fwrite(&patron,sizeof(struct Patron),1,fp);
+    fclose(fp);
+    return 1;
+}
+
 void add_patron() {
     struct Patron patron;
     printf("Enter name:");
+    getchar();
     gets(patron.name);
     printf("Enter Email:");
     gets(patron.email);
@@ -19,7 +28,10 @@ void add_patron() {
     gets(patron.pass);
     printf("Enter 1 if staff 0 otherwise: ");
     scanf("%d",&patron.is_staff);
-    printf("Patron %s successfully added\n",patron.name);
+    if(save_patron(patron))
+        printf("Patron %s successfully added\n",patron.name);
+    else
+        printf("Unsuccessful\n");
 }
 
 int menu()
