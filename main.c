@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 
 struct Patron {
     char name[100];
@@ -8,6 +9,26 @@ struct Patron {
     char email[50];
     int is_staff;
 };
+
+// function prototypes
+int save_patron(struct Patron patron);
+void add_patron();
+int menu();
+void execute_action(int action);
+void view_patrons();
+
+int main()
+{
+    while(1) {
+        printf("COUNTY LIBRARY SYSTEM!\n");
+        printf("Welcome Mr. Titus!\n");
+        execute_action(menu());
+        printf("Press any key to continue");
+        getch();
+        system("cls");
+    }
+    return 0;
+}
 
 int save_patron(struct Patron patron){
     FILE *fp;
@@ -56,7 +77,7 @@ void execute_action(int action) {
         add_patron();
         break;
     case 2:
-        printf("Here is a list of patrons\n");
+        view_patrons();
         break;
     case 3:
         printf("Here is a list of all books");
@@ -69,12 +90,24 @@ void execute_action(int action) {
     }
 }
 
+void view_patrons() {
+    FILE *fp;
+    struct Patron patron;
+    if((fp = fopen("patrons","rb")) == NULL) {
+        printf("Unable to open file.\n");
+        return;
+    }
+    printf("%-20s%-30s%-10s\n","NAME","EMAIL","IS STAFF");
+    while(!feof(fp)){
+       fread(&patron,sizeof(struct Patron),1,fp);
+       printf("%-20s",patron.name);
+       printf("%-30s",patron.email);
+       printf("%-10d\n",patron.is_staff);
+    }
 
-
-int main()
-{
-    printf("COUNTY LIBRARY SYSTEM!\n");
-    printf("Welcome Mr. Titus!\n");
-    execute_action(menu());
-    return 0;
+    fclose(fp);
 }
+
+
+
+
