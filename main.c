@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 
 struct Patron {
     char name[100];
@@ -15,6 +16,25 @@ struct Patron {
     char password[30];
     int is_staff;
 };
+
+// Function declarations
+void add_patron();
+int menu();
+void execute_action(int action);
+void save_patron(struct Patron);
+
+int main()
+{
+    while(1) {
+        printf("COUNTY LIBRARY SYSTEM\n");
+        printf("Welcome Mr. Titus\n");
+        execute_action(menu());
+        printf("Press any key to continue");
+        getch();
+        system("cls");
+    }
+    return 0;
+}
 
 void add_patron() {
     struct Patron patron;
@@ -61,12 +81,4 @@ void execute_action(int action) {
         break;
     default: printf("Invalid action.\n");
     }
-}
-
-int main()
-{
-    printf("COUNTY LIBRARY SYSTEM\n");
-    printf("Welcome Mr. Titus\n");
-    execute_action(menu());
-    return 0;
 }
