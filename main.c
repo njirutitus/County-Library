@@ -21,7 +21,8 @@ struct Patron {
 void add_patron();
 int menu();
 void execute_action(int action);
-void save_patron(struct Patron);
+void save_patron(struct Patron patron);
+void view_patrons();
 
 int main()
 {
@@ -44,9 +45,10 @@ void add_patron() {
     printf("Enter Email: ");
     gets(patron.email);
     printf("Enter initial password: ");
-    gets(patron.email);
+    gets(patron.password);
     printf("Enter 1 if staff 0 otherwise");
     scanf("%d",&patron.is_staff);
+    save_patron(patron);
     printf("%s added\n",patron.name);
 }
 
@@ -72,6 +74,7 @@ void execute_action(int action) {
         break;
     case 2:
         printf("list of all patrons\n");
+        view_patrons();
         break;
     case 3:
         printf("list of all books\n");
@@ -81,4 +84,24 @@ void execute_action(int action) {
         break;
     default: printf("Invalid action.\n");
     }
+}
+
+void save_patron(struct Patron patron) {
+    FILE *fp;
+    fp = fopen("patrons","a+b");
+    fwrite(&patron,sizeof(struct Patron),1,fp);
+    fclose(fp);
+}
+
+void view_patrons() {
+   FILE *fp;
+   struct Patron patron;
+   fp = fopen("patrons","r+b");
+   printf("%-30s%-30s%-10s\n","NAME","EMAIL","IS STAFF");
+   while(!feof(fp)){
+    fread(&patron,sizeof(struct Patron),1,fp);
+    printf("%-30s",patron.name);
+    printf("%-30s",patron.email);
+    printf("%-10d\n",patron.is_staff);
+   }
 }
